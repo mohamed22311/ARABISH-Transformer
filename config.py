@@ -10,7 +10,7 @@ def get_config():
         'd_model': 512,
         'lang_src': 'en',
         'lang_tgt': 'it',
-        'model_foler': 'weights',
+        'model_folder': 'weights',
         'model_basename': 'tmodel_',
         'preload': None,
         'tokenizer_file': 'tokenizer_{0}.json',
