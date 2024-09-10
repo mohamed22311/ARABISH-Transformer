@@ -6,15 +6,14 @@ from datasets import load_dataset
 from make_or_load_tokenizer import make_or_load_tokenizer
 from BilingualDataset import BilingualDataset
 from max_seq_len import calculate_max_seq_len
-def dataset_loader(dataset_name: str,
-                 conf: Dict) -> Tuple(DataLoader, DataLoader, Tokenizer, Tokenizer):
+from typing import List, Dict, Tuple
+
+def dataset_loader(conf: Dict) -> Tuple:
     """
     Function the loads the raw dataset, split it into train and validation, create tokenizers and tokenize it,
     encopmase the data into PyTorch Dataset and turn it into dataloaders ready for training.
 
     Args:
-        dataset_name: str 
-            the name of the Hugging Face dataset should be downloaded and loaded.
         conf: Dict
             configration of the datasets and tokenizers. Example:
             ```bashconf= 
@@ -23,7 +22,8 @@ def dataset_loader(dataset_name: str,
                 'trg_lang` : 'ar',
                 'tokenizer_name: 'tokenizer',
                 'seq_len' : 200,
-                'batch_size': 8
+                'batch_size': 8,
+                'dataset_name': opus
             }```
 
     Examples:
@@ -33,7 +33,7 @@ def dataset_loader(dataset_name: str,
         out: Tuple(DataLoader, DataLoader, Tokenizer, Tokenizer)
             training dataloader, validation dataloader, source tokenizer, target tokenizer
     """
-    dataset_raw = load_dataset(dataset_name, f"{conf['src_lang']}-{conf['trg_lang']}")
+    dataset_raw = load_dataset(conf['dataset_name'], f"{conf['src_lang']}-{conf['trg_lang']}")
 
     tokenizer_src = make_or_load_tokenizer(tokenizer_name=conf['tokenizer_name'], 
                            lang=conf['src_lang'],

@@ -3,6 +3,7 @@ from torch.utils.data import Dataset
 import datasets
 from tokenizers import Tokenizer
 from causal_mask import causal_mask
+from typing import Dict
 class BilingualDataset(Dataset):
     """
     Class inherit from ```bash torch.utils.data.Dataset``` to create encompase a raw data into a dataset
