@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import Dataset
 import datasets
 from tokenizers import Tokenizer
-from causal_mask import causal_mask
+from dataset.causal_mask import causal_mask
 from typing import Dict
 class BilingualDataset(Dataset):
     """

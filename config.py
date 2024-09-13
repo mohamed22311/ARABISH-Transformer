@@ -9,6 +9,7 @@ def get_config():
     """
     return {
         'dataset_name': 'yhavinga/ccmatrix',
+        'dataset_dir': './data',
         'batch_size': 8,
         'num_epochs': 20,
         'lr': 10**-4,
@@ -18,7 +19,7 @@ def get_config():
         'number_of_layers': 6,
         'number_of_heads': 8,
         'lang_src': 'en',
-        'lang_tgt': 'it',
+        'lang_trg': 'ar',
         'model_folder': 'weights',
         'model_basename': 'tmodel_',
         'preload': 'latest',

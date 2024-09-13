@@ -1,9 +1,9 @@
 import torch
 import torch.nn as nn
 
-from MultiHeadAttentionBlock import MultiHeadAttentionBlock
-from FeedForwardBlock import FeedForwardBlock
-from ResidualConnection import ResidualConnection
+from model.MultiHeadAttentionBlock import MultiHeadAttentionBlock
+from model.FeedForwardBlock import FeedForwardBlock
+from model.ResidualConnection import ResidualConnection
 
 class DecoderBlock(nn.Module):
     def __init__(self,

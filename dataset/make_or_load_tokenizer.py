@@ -1,8 +1,8 @@
 
 from tokenizers import Tokenizer
-from tokenizer import tokenizer
-from train_tokenizer import train_tokenizer
-from save_tokenizer import save_tokenizer
+from dataset.tokenizer import tokenizer
+from dataset.train_tokenizer import train_tokenizer
+from dataset.save_tokenizer import save_tokenizer
 from pathlib import Path
 import datasets
 

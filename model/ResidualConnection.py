@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from LayerNormalization import LayerNormalization
+from model.LayerNormalization import LayerNormalization
 
 class ResidualConnection(nn.Module):
     """

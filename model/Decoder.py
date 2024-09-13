@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from LayerNormalization import LayerNormalization
+from model.LayerNormalization import LayerNormalization
 
 class Decoder(nn.Module):
     def __init__(self,

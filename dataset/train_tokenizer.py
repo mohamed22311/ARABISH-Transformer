@@ -1,6 +1,6 @@
 from tokenizers import Tokenizer
 from tokenizers.trainers import WordLevelTrainer
-from data_genarator import data_genarator
+from dataset.data_genarator import data_genarator
 import datasets
 
 def train_tokenizer(tokenizer: Tokenizer,

@@ -8,6 +8,7 @@ from tokenizers import Tokenizer
 
 from model.Transformer import Transformer
 from train.greedy_decode import greedy_decode
+from train.beam_search_decode import beam_search_decode
 from evaluate.evaluate_model_outputs import evaluate_model_outputs
 
 def run_validation(model: Transformer,
@@ -16,15 +17,15 @@ def run_validation(model: Transformer,
                    tokenizer_trg: Tokenizer,
                    max_len: int, 
                    device: torch.device,
-                   print_msg: function,
+                   print_msg,
                    global_step: int,
-                   wandb_: bool,
                    writer: tensorboard,
-                   num_examples=2):
-    
+                   beam_size: int=1,
+                   num_examples: int=2):
+
     """
     Function to make predictions on the validation set to test the model performance.
-    
+
     The function also evaluate the preidctions useing *weights&biases* , *torchmetrics*,
     and also *tensorboard*.
 
@@ -55,10 +56,11 @@ def run_validation(model: Transformer,
 
         writer: tensorboard:
             tensorboard writer used in evaluation
-        
-        wandb_: bool
-            run the wandb while evaluation
-    
+
+        beam_size: int
+            if you want beam search -> Number to indicate how many candidates to consider  
+            if you want greedy serach -> beam_size = 1 (default = 1)
+
         num_examples: int 
             Number of samples in the validation data to be tested (default=2)
 
@@ -97,7 +99,19 @@ def run_validation(model: Transformer,
             # check that the batch size is 1
             assert encoder_input.size(0) == 1, "Batch size must be 1 for validation"
 
-            model_out = greedy_decode(model=model, 
+            model_out = None
+
+            if beam_size > 1:
+                model_out = beam_search_decode(model=model,
+                       beam_size=beam_size,
+                       source_tokens=encoder_input,
+                       source_mask=encoder_mask,
+                       tokenizer_src=tokenizer_src,
+                       tokenizer_trg=tokenizer_trg,
+                       max_len=max_len,
+                       device=device)
+            else:
+                model_out = greedy_decode(model=model, 
                                       source_tokens=encoder_input,
                                       source_mask=encoder_mask,
                                       tokenizer_src=tokenizer_src,
@@ -122,11 +136,9 @@ def run_validation(model: Transformer,
             if count == num_examples:
                 print_msg('-'*console_width)
                 break
-    
 
     evaluate_model_outputs(predicted=predicted,
                            expected=expected,
                            global_step=global_step,
-                           writer=writer,
-                           wandb=wandb_)
+                           writer=writer)
     
