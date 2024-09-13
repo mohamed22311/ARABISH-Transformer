@@ -22,5 +22,5 @@ def data_genarator(dataset: datasets.dataset_dict.DatasetDict,
     Returns
         iter(next(dataset['train]))
     """
-    for item in dataset:
+    for item in dataset['train']:
         yield item['translation'][lang]

@@ -32,13 +32,13 @@ def make_or_load_tokenizer(tokenizer_name:str,
     """
     tokenizer_path = Path(tokenizer_name.format(lang))
     if not Path.exists(tokenizer_path):
-        tokenizer = tokenizer()
+        tokenizer_ = tokenizer()
 
-        train_tokenizer(tokenizer = tokenizer,
+        train_tokenizer(tokenizer = tokenizer_,
                         dataset=dataset,
                         lang=lang)
-        save_tokenizer(tokenizer=tokenizer,tokenizer_path=tokenizer_path)
+        save_tokenizer(tokenizer=tokenizer_,tokenizer_path=tokenizer_path)
         
     else:
-        tokenizer = Tokenizer.from_file(str(tokenizer_path))
-    return tokenizer
+        tokenizer_ = Tokenizer.from_file(str(tokenizer_path))
+    return tokenizer_
