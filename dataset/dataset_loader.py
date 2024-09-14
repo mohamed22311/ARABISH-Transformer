@@ -55,16 +55,17 @@ def dataset_loader(conf: Dict) -> Tuple:
                            dataset=dataset_raw)
     
 
-    train_ds_size = int(0.9 * len(dataset_raw))
-    val_ds_size = len(dataset_raw) - train_ds_size
-    train_ds_raw, val_ds_raw = random_split(dataset=dataset_raw, lengths=[train_ds_size, val_ds_size])
+    train_ds_size = int(0.9 * len(dataset_raw['train']))
+    val_ds_size = len(dataset_raw['train']) - train_ds_size
+    train_ds_raw, val_ds_raw = random_split(dataset=dataset_raw['train'], lengths=[train_ds_size, val_ds_size])
     
-    conf['seq_len'] = calculate_max_seq_len(dataset=dataset_raw,
-                                            src_tokenizer=tokenizer_src,
-                                            trg_tokenizer=tokenizer_trg,
-                                            lang_src=conf['lang_src'],
-                                            lang_trg=conf['lang_trg'],
-                                            offset=20)
+    if conf['seq_len'] is None:
+        conf['seq_len'] = calculate_max_seq_len(dataset=dataset_raw,
+                                                src_tokenizer=tokenizer_src,
+                                                trg_tokenizer=tokenizer_trg,
+                                                lang_src=conf['lang_src'],
+                                                lang_trg=conf['lang_trg'],
+                                                offset=20)
     
     train_dataset = BilingualDataset(datasaet=train_ds_raw,
                                      src_tokenizer=tokenizer_src,

@@ -39,18 +39,18 @@ class PositionalEncoding(nn.Module):
         denominators = torch.pow(self=10000.0, 
                                  exponent= (2 * torch.arange(0, d_model//2) ) / d_model) # 10000^(2i/d_model), i is the index of embedding
         # apply sin to even pos
-        pe[:,0::2] = torch.sin(positions/denominators) # sin(pos/10000^(2i/d_model))
+        pe_matrix[:,0::2] = torch.sin(positions/denominators) # sin(pos/10000^(2i/d_model))
         # apply cos to odd pos
-        pe[:,1::2] = torch.cos(positions/denominators) # cos(pos/10000^(2i/d_model))
+        pe_matrix[:,1::2] = torch.cos(positions/denominators) # cos(pos/10000^(2i/d_model))
 
         # add batch dimenshion  (1,seq_len,d_model) same dimension as the sequance embeddings (to be added over)
-        pe = pe.unsqueeze(0)
+        pe_matrix = pe_matrix.unsqueeze(0)
 
-        self.register_buffer('pe',pe)
+        self.register_buffer('pe_matrix',pe_matrix)
 
     def forward(self,x):
         """
         Function that adds positional encodings to the input embeddings only without the padding.
         """
-        x = x + (self.pe[:,:x.shape[1],:]).requires_grad_(False) 
+        x = x + (self.pe_matrix[:,:x.shape[1],:]).requires_grad_(False) 
         return self.dropout(x)

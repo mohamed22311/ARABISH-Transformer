@@ -52,7 +52,7 @@ def train_model(config: Dict,
                               N=config['number_of_layers'],
                               h=config['number_of_heads'],
                               dropout=config['dropout'],
-                              d_ff=config['d_ff'])
+                              d_ff=config['d_ff']).to(device=device)
     
     
     # Optimimzer to optimize the weights 
@@ -104,18 +104,15 @@ def train_model(config: Dict,
         model.train()
         # create tqdm bar indicator
         batch_iterator = tqdm(train_dataloader, desc=f"Processing Epoch {epoch:02d}")
-
         for batch in batch_iterator:
 
             encoder_input = batch['encoder_input'].to(device) # (batch, seq_len)
             decoder_input = batch['decoder_input'].to(device) # (batch, seq_len)
             encoder_mask = batch['encoder_mask'].to(device) # (batch, 1, 1, seq_len)
             decoder_mask = batch['decoder_mask'].to(device) # (batch, 1, seq_len, seq_len)
-
             # Run the tensors through the encoder, decoder and the projection layer
             encoder_output = model.encode(src=encoder_input,
-                                          src_mask=encoder_mask) # (B, seq_len, d_model)
-            
+                                          src_mask=encoder_mask) # (B, seq_len, d_model)            
             decoder_output = model.decode(encoder_output=encoder_output,
                                           src_mask=encoder_mask,
                                           trg=decoder_input,
